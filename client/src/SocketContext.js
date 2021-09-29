@@ -15,11 +15,12 @@ const ContextProvider = ({ children }) => {
     const [call, setCall] = useState({});
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
+    const [name, setName] = useState('');
 
     // Refs to connect with the iframes of that specific video
     const videoSrc = useRef();
     const callerVideo = useRef();
-    // Ref for call
+    // Ref for calls
     const connectionRef = useRef();
 
     useEffect(() => {
@@ -60,25 +61,61 @@ const ContextProvider = ({ children }) => {
         // Peer will behave as similar to a socket. it will have some actions and handlers that will happen when initiating/accepting a call
         peer.on('signal', (data)=>{ // Data about that signal that was received
             // Video connection would be established here by intertwining hte Socket and Peer
-            socket.emit('answerCall',{ // This happens/gets_exe once a signal is created
+            socket.emit('answercall',{ // This happens/gets_exe once a signal is created
                 signal: data,
                 to: call.from, // Whose call is being attended 
             })
         });
 
+        // Get the stream and set the user video
         peer.on('stream', (currentStream =>{
             // Set another ref as one was set for videoSrc, for the other user's video || Stream for the other person on the call
             callerVideo.current.srcObject = currentStream;
         }));
-
+        
         // This call comes from the initial socket, listening for `callUser`
         peer.signal(call.signal);
-
+        
         // Assigning that the current connection = the current peer inside of the connection
         connectionRef.current = peer;
-     }
-
-    const callUser = () => {  }
+    }
+    
+    const callUser = (id) => { 
+        // create a peer capable of a video call
+        const peer = new Peer({
+            initiator: true, // Set to true as the call is initiated from this end
+            // options for video chat
+            trickle: false, // Set to true
+            stream // stream was received and set to state while requesting permission for browser's camera and mic
+        });
+        
+        // Peer will behave as similar to a socket. it will have some actions and handlers that will happen when initiating/accepting a call
+        peer.on('signal', (data)=>{ // Data about that signal that was received
+            // Video connection would be established here by intertwining hte Socket and Peer
+            socket.emit('calluser',{ // This happens/gets_exe once a signal is created
+                userToCall: id,
+                signalData: data,
+                from: me, // Whose call is teh call from || `me` => stored in state
+                name:  // pass in the user's name
+            })
+        });
+        
+        peer.on('stream', (currentStream =>{
+            // Set another ref as one was set for videoSrc, for the other user's video || Stream for the other person on the call
+            callerVideo.current.srcObject = currentStream;
+        }));
+        
+        // When a user gets a call, they can accept it or leave it
+        // Created 
+        socket.on('callaccepted', (signal)=>{
+            setCallAccepted(true);
+            
+            peer.signal(signal);
+        })
+        
+        // Assigning that the current connection = the current peer inside of the connection
+        connectionRef.current = peer;
+    }
 
     const leaveCall = () => {  }
 
