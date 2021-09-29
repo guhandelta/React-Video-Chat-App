@@ -37,7 +37,7 @@ const VideoPlayer = () => {
                     <Paper className={classes.paper}>
                         <Grid item xs={12} md={6}>
                             <Typography variant="h5" gutterBottom>{ name || 'Name' }</Typography>
-                            <video playsinline muted ref={videoSrc} autoplay className={classes.video} />
+                            <video playsInline muted ref={videoSrc} autoPlay className={classes.video} />
                             {/* muted => muting the video on the current machine, and not the caller's video 
                                 the ref used here is the main connection between the stream and video component*/}
                         </Grid>
