@@ -128,6 +128,27 @@ const ContextProvider = ({ children }) => {
         window.location.reload(); // Reloading teh page after a call allows calling another user right after the previous call
     }
 
+    return (
+        <SocketContext.Provider value={{
+            call,
+            callAccpeted,
+            // video refs
+            videoSrc,
+            callerVideo,
+            // stream dataView
+            stream,
+            name,
+            setName,
+            callEnded,
+            me,
+            // functions created to handle the call
+            callUser,
+            answerCall,
+            leaveCall
+        }}>
+            {children}
+        </SocketContext.Provider>
+    );
 }
 
-export default ContextProvider;
+export { ContextProvider, SocketContext };
