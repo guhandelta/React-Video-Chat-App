@@ -53,6 +53,7 @@ const Options = ({ children }) => {
                             <Grid item xs={12} md={6} className={classes.padding}>
                                 <Typography gutterBottom variant="h5">Account Info</Typography>
                                 <TextField label="name" value={name} onChange={(e) => setName(e.target.value)} fullWidth />
+                                {console.log('me:',me)}
                                 <CopyToClipboard text={me} className={classes.margin}>
                                     <Button variant="contained" color="primary" fullWidth startIcon={<Assignment fontSize="large" />}>
                                         Copy your ID
@@ -79,7 +80,6 @@ const Options = ({ children }) => {
                         </Grid>
                     </form>
                 </Paper>
-                <h3>Options</h3>            
                 { children }
             </Container>
         </>

@@ -61,7 +61,7 @@ const ContextProvider = ({ children }) => {
         // Peer will behave as similar to a socket. it will have some actions and handlers that will happen when initiating/accepting a call
         peer.on('signal', (data)=>{ // Data about that signal that was received
             // Video connection would be established here by intertwining hte Socket and Peer
-            socket.emit('answercall',{ // This happens/gets_exe once a signal is created
+            socket.emit('answerCall',{ // This happens/gets_exe once a signal is created
                 signal: data,
                 to: call.from, // Whose call is being attended 
             })
