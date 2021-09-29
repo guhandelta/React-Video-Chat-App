@@ -116,10 +116,18 @@ const ContextProvider = ({ children }) => {
         // Assigning that the current connection = the current peer inside of the connection
         connectionRef.current = peer;
     }
+    
+    const leaveCall = () => { 
+        
+        setCallEnded(true);
+        
+        // destrov the connection and stop receiving input from user's camera and mic
+        connectionRef.current.destroy();
 
-    const leaveCall = () => {  }
+        // Reload the page after terminating the call and provide teh user with a new id, @ socket.on('me', id => setId(id))
+        window.location.reload(); // Reloading teh page after a call allows calling another user right after the previous call
+    }
 
-    return true;
 }
 
 export default ContextProvider;
