@@ -3,7 +3,7 @@ import { io} from 'socket.io-client'
 import Peer from 'simple-peer';
 
 // Initial context
-const Connection = createContext();
+const SocketContext = createContext();
 
 // Pass instance of the serevr to context.io | The full URL of the deployed server can be passed in here
 const socket = io('https://localhost:5000');
@@ -96,7 +96,7 @@ const ContextProvider = ({ children }) => {
                 userToCall: id,
                 signalData: data,
                 from: me, // Whose call is teh call from || `me` => stored in state
-                name:  // pass in the user's name
+                name  // pass in the user's name
             })
         });
         
@@ -131,7 +131,7 @@ const ContextProvider = ({ children }) => {
     return (
         <SocketContext.Provider value={{
             call,
-            callAccpeted,
+            callAccepted,
             // video refs
             videoSrc,
             callerVideo,
